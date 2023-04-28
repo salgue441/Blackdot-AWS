@@ -67,8 +67,6 @@ exports.getAllEpicas = async (req, res) => {
       if (!sprintIssuesMap[idSprint]) {
         sprintIssuesMap[idSprint] = [];
       }
-
-      sprintIssuesMap[idSprint].push(idIssue);
     })
 
     sprints.forEach((sprint) => {
@@ -97,6 +95,7 @@ exports.getAllEpicas = async (req, res) => {
       if (relatedSprints) {
         epicaSprintsMap[idEpica].push(relatedSprints)
       }
+
     })
 
     filteredEpicas.forEach((epica) => {
@@ -162,8 +161,6 @@ exports.getAllEpicasAPI = async (req, res) => {
       if (!sprintIssuesMap[idSprint]) {
         sprintIssuesMap[idSprint] = [];
       }
-
-      sprintIssuesMap[idSprint].push(idIssue);
     })
 
     sprints.forEach((sprint) => {
@@ -192,6 +189,7 @@ exports.getAllEpicasAPI = async (req, res) => {
       if (relatedSprints) {
         epicaSprintsMap[idEpica].push(relatedSprints)
       }
+
     })
 
     filteredEpicas.forEach((epica) => {
@@ -200,6 +198,9 @@ exports.getAllEpicasAPI = async (req, res) => {
 
       epica.sprints = epicaSprints
     })
+
+
+
 
     res.json({ epicas: filteredEpicas });
   } catch (error) {
