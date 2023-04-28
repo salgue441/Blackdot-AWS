@@ -43,11 +43,18 @@ exports.getAllEpicas = async (req, res) => {
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
-    // Extract epic IDs from the sprints
-    const epicIdsInSprints = sprints.flatMap(sprint => sprint.epics);
+    // Filtering epicas with their names
+    const filteredEpica = epicas.filter((epica) => {
+      const epicName = epica.nombreEpica.toLowerCase();
 
-    // Filter epicas based on the epic IDs in the sprints
-    const filteredEpicas = epicas.filter(epica => epicIdsInSprints.includes(epica.idEpica));
+      return (
+        epicName.includes("middleware paqueterías") ||
+        epicName.includes("implementar secciones de la aplicación") ||
+        epicName.includes("migración de contentful a ZeSystem") ||
+        epicName.includes("google tag manager") ||
+        epicName.includes("catalog connect")
+      );
+    });
 
     // Relating sprints and issues
     const sprintIssuesMap = {};
@@ -92,18 +99,17 @@ exports.getAllEpicas = async (req, res) => {
       }
     });
 
-    filteredEpicas.forEach((filteredEpica) => {
+    filteredEpica.forEach((filteredEpica) => {
       const idEpica = filteredEpica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
       filteredEpica.sprints = epicaSprints;
     });
 
-
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
       {
-        epicas: filteredEpicas,
+        epicas: filteredEpica,
         sprints: sprintNames,
       }
     );
@@ -132,11 +138,18 @@ exports.getAllEpicasAPI = async (req, res) => {
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
-    // Extract epic IDs from the sprints
-    const epicIdsInSprints = sprints.flatMap(sprint => sprint.epics);
+    // Filtering epicas with their names
+    const filteredEpica = epicas.filter((epica) => {
+      const epicName = epica.nombreEpica.toLowerCase();
 
-    // Filter epicas based on the epic IDs in the sprints
-    const filteredEpicas = epicas.filter(epica => epicIdsInSprints.includes(epica.idEpica));
+      return (
+        epicName.includes("middleware paqueterías") ||
+        epicName.includes("implementar secciones de la aplicación") ||
+        epicName.includes("migración de contentful a ZeSystem") ||
+        epicName.includes("google tag manager") ||
+        epicName.includes("catalog connect")
+      );
+    });
 
     // Relating sprints and issues
     const sprintIssuesMap = {};
@@ -181,14 +194,14 @@ exports.getAllEpicasAPI = async (req, res) => {
       }
     });
 
-    filteredEpicas.forEach((filteredEpica) => {
+    filteredEpica.forEach((filteredEpica) => {
       const idEpica = filteredEpica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
       filteredEpica.sprints = epicaSprints;
     });
 
-    res.status(200).json({ epicas: filteredEpicas });
+    res.status(200).json({ epicas: filteredEpica });
   } catch (error) {
     res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error });
   }
