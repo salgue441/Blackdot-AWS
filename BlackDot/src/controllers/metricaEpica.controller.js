@@ -173,7 +173,20 @@ exports.getAllEpicasAPI = async (req, res) => {
       epica.sprints = epicaSprints
     })
 
-    res.status(200).json({ epicas: epicas });
+    // Filtering epicas with their names
+    const filteredEpicas = epicas.find((epica) => {
+      const epicName = epica.nombreEpica.toLowerCase();
+
+      return (
+        epicName.includes("middleware paqueterías") ||
+        epicName.includes("implementar secciones de la aplicación") ||
+        epicName.includes("migración de contentful a ZeSystem") ||
+        epicName.includes("google tag manager") ||
+        epicName.includes("catalog connect")
+      )
+    })
+
+    res.status(200).json({ epicas: filteredEpicas });
   } catch (error) {
     res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error });
   }
