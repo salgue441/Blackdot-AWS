@@ -60,7 +60,7 @@ exports.getRegistrarUsuario = async (req, res) => {
       }
     }
 
-    res.render("../Views/Static/editar/registrarUsuario.ejs", {
+    res.render("../views/static/editar/registrarUsuario.ejs", {
       empleadoSinRol,
     })
   } catch (error) {
