@@ -37,15 +37,13 @@ exports.getAllEpicas = async (req, res) => {
     const allSprints = await Sprint.getAll();
     const sprintIssues = await SprintIssue.getAll();
     const sprintEpicas = await SprintEpica.getAll();
-    const sprintNames = await Sprint.getAll()
 
-    // Filtering sprints for the last 6
     const sprints = allSprints
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
     // Filtering epicas with their names
-    const filteredEpicas = epicas.find((epica) => {
+    const filteredEpica = epicas.find((epica) => {
       const epicName = epica.nombreEpica.toLowerCase();
 
       return (
@@ -54,11 +52,11 @@ exports.getAllEpicas = async (req, res) => {
         epicName.includes("migración de contentful a ZeSystem") ||
         epicName.includes("google tag manager") ||
         epicName.includes("catalog connect")
-      )
-    })
+      );
+    });
 
     // Relating sprints and issues
-    const sprintIssuesMap = {}
+    const sprintIssuesMap = {};
 
     sprintIssues.forEach((sprintIssue) => {
       const idSprint = sprintIssue.idSprint;
@@ -67,48 +65,50 @@ exports.getAllEpicas = async (req, res) => {
       if (!sprintIssuesMap[idSprint]) {
         sprintIssuesMap[idSprint] = [];
       }
-    })
+
+      sprintIssuesMap[idSprint].push(idIssue);
+    });
 
     sprints.forEach((sprint) => {
       const idSprint = sprint.idSprint;
       const sprintIssues = sprintIssuesMap[idSprint] || [];
 
       sprint.issues = issues.filter((issue) =>
-        sprintIssues.includes(issue.idIssue));
-    })
+        sprintIssues.includes(issue.idIssue)
+      );
+    });
 
-    // relating epica and sprintIssuesMap
-    const epicaSprintsMap = {}
+    // Relating epica and sprintIssuesMap
+    const epicaSprintsMap = {};
 
     sprintEpicas.forEach((sprintEpica) => {
-      const idEpica = sprintEpica.idEpica
-      const idSprint = sprintEpica.idSprint
+      const idEpica = sprintEpica.idEpica;
+      const idSprint = sprintEpica.idSprint;
 
       if (!epicaSprintsMap[idEpica]) {
-        epicaSprintsMap[idEpica] = []
+        epicaSprintsMap[idEpica] = [];
       }
 
       const relatedSprints = sprints.find(
         (sprint) => sprint.idSprint === idSprint
-      )
+      );
 
       if (relatedSprints) {
-        epicaSprintsMap[idEpica].push(relatedSprints)
+        epicaSprintsMap[idEpica].push(relatedSprints);
       }
+    });
 
-    })
+    if (filteredEpica) {
+      const idEpica = filteredEpica.idEpica;
+      const epicaSprints = epicaSprintsMap[idEpica] || [];
 
-    filteredEpicas.forEach((epica) => {
-      const idEpica = epica.idEpica
-      const epicaSprints = epicaSprintsMap[idEpica] || []
-
-      epica.sprints = epicaSprints
-    })
+      filteredEpica.sprints = epicaSprints;
+    }
 
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
       {
-        epicas: filteredEpicas,
+        epicas: filteredEpica ? [filteredEpica] : [],
         sprints: sprintNames,
       }
     );
@@ -133,13 +133,12 @@ exports.getAllEpicasAPI = async (req, res) => {
     const sprintIssues = await SprintIssue.getAll();
     const sprintEpicas = await SprintEpica.getAll();
 
-    // Filtering sprints for the last 6
     const sprints = allSprints
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
     // Filtering epicas with their names
-    const filteredEpicas = epicas.find((epica) => {
+    const filteredEpica = epicas.find((epica) => {
       const epicName = epica.nombreEpica.toLowerCase();
 
       return (
@@ -148,11 +147,11 @@ exports.getAllEpicasAPI = async (req, res) => {
         epicName.includes("migración de contentful a ZeSystem") ||
         epicName.includes("google tag manager") ||
         epicName.includes("catalog connect")
-      )
-    })
+      );
+    });
 
     // Relating sprints and issues
-    const sprintIssuesMap = {}
+    const sprintIssuesMap = {};
 
     sprintIssues.forEach((sprintIssue) => {
       const idSprint = sprintIssue.idSprint;
@@ -161,48 +160,47 @@ exports.getAllEpicasAPI = async (req, res) => {
       if (!sprintIssuesMap[idSprint]) {
         sprintIssuesMap[idSprint] = [];
       }
-    })
+
+      sprintIssuesMap[idSprint].push(idIssue);
+    });
 
     sprints.forEach((sprint) => {
       const idSprint = sprint.idSprint;
       const sprintIssues = sprintIssuesMap[idSprint] || [];
 
       sprint.issues = issues.filter((issue) =>
-        sprintIssues.includes(issue.idIssue));
-    })
+        sprintIssues.includes(issue.idIssue)
+      );
+    });
 
-    // relating epica and sprintIssuesMap
-    const epicaSprintsMap = {}
+    // Relating epica and sprintIssuesMap
+    const epicaSprintsMap = {};
 
     sprintEpicas.forEach((sprintEpica) => {
-      const idEpica = sprintEpica.idEpica
-      const idSprint = sprintEpica.idSprint
+      const idEpica = sprintEpica.idEpica;
+      const idSprint = sprintEpica.idSprint;
 
       if (!epicaSprintsMap[idEpica]) {
-        epicaSprintsMap[idEpica] = []
+        epicaSprintsMap[idEpica] = [];
       }
 
       const relatedSprints = sprints.find(
         (sprint) => sprint.idSprint === idSprint
-      )
+      );
 
       if (relatedSprints) {
-        epicaSprintsMap[idEpica].push(relatedSprints)
+        epicaSprintsMap[idEpica].push(relatedSprints);
       }
+    });
 
-    })
+    if (filteredEpica) {
+      const idEpica = filteredEpica.idEpica;
+      const epicaSprints = epicaSprintsMap[idEpica] || [];
 
-    filteredEpicas.forEach((epica) => {
-      const idEpica = epica.idEpica
-      const epicaSprints = epicaSprintsMap[idEpica] || []
+      filteredEpica.sprints = epicaSprints;
+    }
 
-      epica.sprints = epicaSprints
-    })
-
-
-
-
-    res.json({ epicas: filteredEpicas });
+    res.status(200).json({ epicas: filteredEpica });
   } catch (error) {
     res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error });
   }
