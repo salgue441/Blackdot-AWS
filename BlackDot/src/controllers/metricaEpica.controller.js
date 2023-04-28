@@ -39,9 +39,23 @@ exports.getAllEpicas = async (req, res) => {
     const sprintEpicas = await SprintEpica.getAll();
     const sprintNames = await Sprint.getAll()
 
+    // Filtering sprints for the last 6
     const sprints = allSprints
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
+
+    // Filtering epicas with their names
+    const filteredEpicas = epicas.find((epica) => {
+      const epicName = epica.nombreEpica.toLowerCase();
+
+      return (
+        epicName.includes("middleware paqueterías") ||
+        epicName.includes("implementar secciones de la aplicación") ||
+        epicName.includes("migración de contentful a ZeSystem") ||
+        epicName.includes("google tag manager") ||
+        epicName.includes("catalog connect")
+      )
+    })
 
     // Relating sprints and issues
     const sprintIssuesMap = {}
@@ -85,7 +99,7 @@ exports.getAllEpicas = async (req, res) => {
       }
     })
 
-    epicas.forEach((epica) => {
+    filteredEpicas.forEach((epica) => {
       const idEpica = epica.idEpica
       const epicaSprints = epicaSprintsMap[idEpica] || []
 
@@ -95,7 +109,7 @@ exports.getAllEpicas = async (req, res) => {
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
       {
-        epicas: epicas,
+        epicas: filteredEpicas,
         sprints: sprintNames,
       }
     );
