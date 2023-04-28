@@ -37,6 +37,7 @@ exports.getAllEpicas = async (req, res) => {
     const allSprints = await Sprint.getAll();
     const sprintIssues = await SprintIssue.getAll();
     const sprintEpicas = await SprintEpica.getAll();
+    const sprintNames = await Sprint.getAll()
 
     const sprints = allSprints
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
