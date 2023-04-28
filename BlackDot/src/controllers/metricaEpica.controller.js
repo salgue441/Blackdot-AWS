@@ -187,8 +187,7 @@ exports.getAllEpicasAPI = async (req, res) => {
       epica.sprints = epicaSprints
     })
 
-
-    res.status(200).json({ epicas: filteredEpicas });
+    res.json({ epicas: filteredEpicas });
   } catch (error) {
     res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error });
   }
