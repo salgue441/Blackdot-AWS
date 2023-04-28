@@ -99,11 +99,11 @@ exports.getAllEpicas = async (req, res) => {
       }
     });
 
-    filteredEpica.forEach((epica) => {
-      const idEpica = epica.idEpica;
+    filteredEpicas.forEach((filteredEpica) => {
+      const idEpica = filteredEpica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
-      epica.sprints = epicaSprints;
+      filteredEpica.sprints = epicaSprints;
     });
 
     res.render(
