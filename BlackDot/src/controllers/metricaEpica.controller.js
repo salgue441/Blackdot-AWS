@@ -32,19 +32,12 @@ const SprintEpica = require("../models/sprintEpica.model")
  */
 exports.getAllEpicas = async (req, res) => {
   try {
-    const epicas = await Epica.getAll();
-    const issues = await Issue.getAll();
-    const allSprints = await Sprint.getAll();
-    const sprintIssues = await SprintIssue.getAll();
-    const sprintEpicas = await SprintEpica.getAll();
-    const sprintNames = await Sprint.getAll()
-
     const sprints = allSprints
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
     // Filtering epicas with their names
-    const filteredEpica = epicas.filter((epica) => {
+    const filteredEpicas = epicas.filter((epica) => {
       const epicName = epica.nombreEpica.toLowerCase();
 
       return (
@@ -99,12 +92,14 @@ exports.getAllEpicas = async (req, res) => {
       }
     });
 
-    filteredEpica.forEach((filteredEpica) => {
+    filteredEpicas.forEach((filteredEpica) => {
       const idEpica = filteredEpica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
       filteredEpica.sprints = epicaSprints;
     });
+
+    res.status(200).json({ epicas: filteredEpicas });
 
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
@@ -138,18 +133,11 @@ exports.getAllEpicasAPI = async (req, res) => {
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
-    // Filtering epicas with their names
-    const filteredEpicas = epicas.filter((epica) => {
-      const epicName = epica.nombreEpica.toLowerCase();
+    // Extract epic IDs from the sprints
+    const epicIdsInSprints = sprints.flatMap(sprint => sprint.epics);
 
-      return (
-        epicName.includes("middleware paqueterías") ||
-        epicName.includes("implementar secciones de la aplicación") ||
-        epicName.includes("migración de contentful a ZeSystem") ||
-        epicName.includes("google tag manager") ||
-        epicName.includes("catalog connect")
-      );
-    });
+    // Filter epicas based on the epic IDs in the sprints
+    const filteredEpicas = epicas.filter(epica => epicIdsInSprints.includes(epica.idEpica));
 
     // Relating sprints and issues
     const sprintIssuesMap = {};
