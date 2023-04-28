@@ -44,7 +44,7 @@ exports.getAllEpicas = async (req, res) => {
       .slice(0, 7);
 
     // Filtering epicas with their names
-    const filteredEpica = epicas.find((epica) => {
+    const filteredEpica = epicas.filter((epica) => {
       const epicName = epica.nombreEpica.toLowerCase();
 
       return (
@@ -99,12 +99,12 @@ exports.getAllEpicas = async (req, res) => {
       }
     });
 
-    if (filteredEpica) {
-      const idEpica = filteredEpica.idEpica;
+    filteredEpica.forEach((epica) => {
+      const idEpica = epica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
-      filteredEpica.sprints = epicaSprints;
-    }
+      epica.sprints = epicaSprints;
+    });
 
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
