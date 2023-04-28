@@ -82,7 +82,7 @@ app.get("/", (req, res) => {
  * @returns {Function} - Callback function
  */
 app.get("*", (req, res) => {
-  res.render("views/static/404/404.ejs");
+  res.render("static/404/404.ejs");
 });
 
 /**
