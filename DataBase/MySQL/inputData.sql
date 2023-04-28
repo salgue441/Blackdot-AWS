@@ -1,5 +1,5 @@
     -- Insertando datos en la tabla Rol
-    insert into Rol
+    insert into rol
         (nombreRol)
     values
         ('Administrador'),
@@ -7,7 +7,7 @@
         ('Sin Rol');
 
     -- Insertando datos en la tabla de Privilegios
-    insert into Privilegio
+    insert into privilegio
         (nombrePrivilegio, descripcionPrivilegio)
     values
         ('Consultar respuestas', 'Consultar respuestas de retroalimentacion'),
@@ -38,7 +38,7 @@
         ('Sin privilegio', 'Privilegio vacío para rol sin privilegio');
 
     -- Insertando datos en la relacion de RolPrivilegio
-    insert into RolPrivilegio(idRol, idPrivilegio)
+    insert into rolPrivilegio(idRol, idPrivilegio)
     values 
     -- Admin
     (1, 1),
@@ -79,7 +79,7 @@
     (3, 26);
 
     -- Insertando datos en pregunta
-    insert into BancoPreguntas
+    insert into bancoPreguntas
         (contenido, tipoPregunta)
     values
         ('¿Cómo te sientes?', 'Cuantitativa'),
@@ -91,7 +91,7 @@
         ('¿Que impedimiento tuvimos en este sprint?', 'Cualitativa');
 
     -- Insertando datos en banco de preguntas
-    insert into Pregunta
+    insert into pregunta
         (contenido, tipoPregunta)
     values
         ('¿Cómo te sientes?', 'Cuantitativa'),
