@@ -21,6 +21,7 @@ const express = require("express");
 const session = require("express-session");
 const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 // App
 const app = express();
@@ -32,6 +33,14 @@ const PORT = 3000;
 // Middlewares
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
+
+app.use(
+  cors({
+    origin: ["https://padawan-0.laing.mx", "http://localhost:3000"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  })
+)
 
 // View engine
 app.set("view engine", "ejs");
