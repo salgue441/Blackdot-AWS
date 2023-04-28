@@ -36,7 +36,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: ["https://padawan-0.laing.mx", "http://localhost:3000"],
+    origin: ["https://padawan-0.laing.mx/", "http://localhost:3000"],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowHeaders: ["Content-Type", "Authorization"],
   })
