@@ -36,7 +36,7 @@ exports.getEditarUsuario = async (req, res) => {
       empleadoRoles,
     })
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error })
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error })
   }
 }
 
@@ -64,7 +64,7 @@ exports.getRegistrarUsuario = async (req, res) => {
       empleadoSinRol,
     })
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error })
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error })
   }
 }
 
@@ -91,7 +91,7 @@ exports.postAceptarUsuario = async (req, res) => {
 
     res.redirect("/editar/empleados/aceptar")
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error })
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error })
   }
 }
 
@@ -114,10 +114,10 @@ exports.postRechazarUsuario = async (req, res) => {
       await Empleado.deleteByID(idEmpleado)
       res.redirect("/editar/empleados/aceptar")
     } catch (error) {
-      res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error })
+      res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error })
     }
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error })
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error })
   }
 }
 
@@ -135,12 +135,12 @@ exports.getEditarUsuario = async (req, res) => {
     const empleados = await EmpleadoRol.getAllWithRoles()
     const roles = await Rol.getAll()
 
-    res.render(path.join(__dirname, "../Views/Static/editar/correo.ejs"), {
+    res.render(path.join(__dirname, "../views/statis/editar/correo.ejs"), {
       empleados,
       roles,
     })
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), {
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), {
       error,
     })
   }
@@ -155,6 +155,6 @@ exports.getEliminarUsuario = async (req, res) => {
     await Empleado.deleteByID(idEmpleado)
     res.redirect("/editar/empleados")
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error })
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error })
   }
 }
