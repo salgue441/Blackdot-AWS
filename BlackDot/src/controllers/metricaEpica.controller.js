@@ -114,7 +114,7 @@ exports.getAllEpicas = async (req, res) => {
       }
     );
   } catch (error) {
-    res.render(path.join(__dirname, "../Views/Static/error.ejs"), { error });
+    res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error });
   }
 };
 
