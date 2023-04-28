@@ -131,11 +131,18 @@ exports.getAllEpicasAPI = async (req, res) => {
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
 
-    // Extract epic IDs from the sprints
-    const epicIdsInSprints = sprints.flatMap(sprint => sprint.epics);
+    // Filtering epicas with their names
+    const filteredEpicas = epicas.filter((epica) => {
+      const epicName = epica.nombreEpica.toLowerCase();
 
-    // Filter epicas based on the epic IDs in the sprints
-    const filteredEpicas = epicas.filter(epica => epicIdsInSprints.includes(epica.idEpica));
+      return (
+        epicName.includes("middleware paqueterías") ||
+        epicName.includes("implementar secciones de la aplicación") ||
+        epicName.includes("migración de contentful a ZeSystem") ||
+        epicName.includes("google tag manager") ||
+        epicName.includes("catalog connect")
+      );
+    });
 
     // Relating sprints and issues
     const sprintIssuesMap = {};
