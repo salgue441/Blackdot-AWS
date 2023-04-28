@@ -99,12 +99,10 @@ exports.getAllEpicas = async (req, res) => {
       filteredEpica.sprints = epicaSprints;
     });
 
-    res.status(200).json({ epicas: filteredEpicas });
-
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
       {
-        epicas: filteredEpica,
+        epicas: filteredEpicas,
         sprints: sprintNames,
       }
     );
