@@ -8,7 +8,7 @@
 -- author: Diego Sandoval
 -- author: Ivan Paredes
 -- version: 1.0
--- timestamp: 2023-03-11
+-- datetime: 2023-03-11
 -- copyright: Copyright (c) 2023 - MIT License
 -- copyright: Copyright (c) 2023 - MIT License
 
@@ -47,7 +47,7 @@ create table if not exists epica
     idEpica int not null auto_increment primary key,
     jiraID int unique,
     jiraKey varchar(50),
-    nombreEpica varchar(50)
+    nombreEpica varchar(150)
 );
 
 create table if not exists sprint
@@ -57,8 +57,8 @@ create table if not exists sprint
     sprintName varchar(200),
     state varchar(50),
     boardID int not null,
-    fechaCreacion timestamp not null default current_timestamp,
-    fechaFinalizacion timestamp not null default current_timestamp
+    fechaCreacion datetime not null default current_timestamp,
+    fechaFinalizacion datetime not null default current_timestamp
 );
 
 create table if not exists issue
@@ -70,24 +70,17 @@ create table if not exists issue
     labelIssue varchar (100),
     prioridadIssue enum ('Highest', 'High', 'Medium', 'Low', 'Lowest') not null default 'Lowest',
     estadoIssue enum ('To Do', 'En curso', 'Pull request', 'QA', 'Blocked', 'Done') not null default 'To Do',
-    fechaCreacion timestamp not null default current_timestamp,
-    fechaFinalizacion timestamp null default null
+    fechaCreacion datetime not null default current_timestamp,
+    fechaFinalizacion datetime null default null
 );
 
 create table if not exists retroalimentacion
 (
     idRetroalimentacion int not null auto_increment primary key, 
-    fechaCreacion timestamp not null default current_timestamp, 
-    fechaFinalizacion timestamp not null default current_timestamp,
+    fechaCreacion datetime not null default current_timestamp, 
+    fechaFinalizacion datetime not null default current_timestamp,
 
     idSprint int not null
-);
-
-create table if not exists reporte
-(
-    idReporte int not null auto_increment primary key,
-    fechaCreacion timestamp default current_timestamp not null,
-    idRetroalimentacion int not null
 );
 
 create table if not exists pregunta
@@ -131,8 +124,8 @@ create table if not exists accionable
     prioridadAccionable enum ('Alta', 'Media-Alta', 'Media', 'Media-Baja', 'Baja') not null default 'Media',
     estadoAccionable enum ('Aprobado', 'No aprobado') not null default 'No aprobado',
     estadoIssue enum ('To Do', 'In Progress', 'Done') not null default 'To Do',
-    fechaCreacion timestamp not null default current_timestamp ,
-    fechaFinalizacion timestamp not null default current_timestamp
+    fechaCreacion datetime not null default current_timestamp ,
+    fechaFinalizacion datetime not null default current_timestamp
 );
 
 -- Relaciones
@@ -158,12 +151,12 @@ create table if not exists rolPrivilegio
 
 create table if not exists sprintEpica
 (
-idEpica int not null,
-idSprint int not null,
+    idEpica int not null,
+    idSprint int not null,
 
-primary key (idEpica, idSprint),
-foreign key (idEpica) references epica (idEpica),
-foreign key (idSprint) references sprint (idSprint)
+    primary key (idEpica, idSprint),
+    foreign key (idEpica) references epica (idEpica),
+    foreign key (idSprint) references sprint (idSprint)
 );
 
 create table if not exists sprintIssue
@@ -171,9 +164,9 @@ create table if not exists sprintIssue
     idIssue int not null, 
     idSprint int not null, 
 
-primary key (idIssue, idSprint),
-foreign key (idIssue) references issue (idIssue),
-foreign key (idSprint) references sprint (idSprint)
+    primary key (idIssue, idSprint),
+    foreign key (idIssue) references issue (idIssue),
+    foreign key (idSprint) references sprint (idSprint)
 );
 
 create table if not exists retroalimentacionPregunta
@@ -216,6 +209,3 @@ add constraint fk_idRetroalimentacionCuanti foreign key (idRetroalimentacion) re
 alter table cualitativa
 add constraint fk_idPreguntaCuali foreign key (idPregunta) references retroalimentacionPregunta(idPregunta),
 add constraint fk_idRetroalimentacionCuali foreign key (idRetroalimentacion) references retroalimentacionPregunta (idRetroalimentacion);
-
-alter table reporte
-add constraint fk_idRetroalimentacion foreign key (idRetroalimentacion) references retroalimentacion (idRetroalimentacion);

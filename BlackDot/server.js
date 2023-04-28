@@ -73,7 +73,7 @@ app.get("/", (req, res) => {
  * @returns {Function} - Callback function
  */
 app.get("*", (req, res) => {
-  res.render("Static/404/404");
+  res.render("static/404/404");
 });
 
 /**
