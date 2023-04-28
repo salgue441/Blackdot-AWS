@@ -139,7 +139,7 @@ exports.getAllEpicasAPI = async (req, res) => {
       .slice(0, 7);
 
     // Filtering epicas with their names
-    const filteredEpica = epicas.filter((epica) => {
+    const filteredEpicas = epicas.filter((epica) => {
       const epicName = epica.nombreEpica.toLowerCase();
 
       return (
@@ -194,14 +194,15 @@ exports.getAllEpicasAPI = async (req, res) => {
       }
     });
 
-    filteredEpica.forEach((filteredEpica) => {
+    filteredEpicas.forEach((filteredEpica) => {
       const idEpica = filteredEpica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
       filteredEpica.sprints = epicaSprints;
     });
 
-    res.status(200).json({ epicas: filteredEpica });
+    res.status(200).json({ epicas: filteredEpicas });
+
   } catch (error) {
     res.render(path.join(__dirname, "../views/static/error/error.ejs"), { error });
   }
