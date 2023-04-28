@@ -120,9 +120,23 @@ exports.getAllEpicasAPI = async (req, res) => {
     const sprintIssues = await SprintIssue.getAll();
     const sprintEpicas = await SprintEpica.getAll();
 
+    // Filtering sprints for the last 6
     const sprints = allSprints
       .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
       .slice(0, 7);
+
+    // Filtering epicas with their names
+    const filteredEpicas = epicas.find((epica) => {
+      const epicName = epica.nombreEpica.toLowerCase();
+
+      return (
+        epicName.includes("middleware paqueterías") ||
+        epicName.includes("implementar secciones de la aplicación") ||
+        epicName.includes("migración de contentful a ZeSystem") ||
+        epicName.includes("google tag manager") ||
+        epicName.includes("catalog connect")
+      )
+    })
 
     // Relating sprints and issues
     const sprintIssuesMap = {}
@@ -166,25 +180,13 @@ exports.getAllEpicasAPI = async (req, res) => {
       }
     })
 
-    epicas.forEach((epica) => {
+    filteredEpicas.forEach((epica) => {
       const idEpica = epica.idEpica
       const epicaSprints = epicaSprintsMap[idEpica] || []
 
       epica.sprints = epicaSprints
     })
 
-    // Filtering epicas with their names
-    const filteredEpicas = epicas.find((epica) => {
-      const epicName = epica.nombreEpica.toLowerCase();
-
-      return (
-        epicName.includes("middleware paqueterías") ||
-        epicName.includes("implementar secciones de la aplicación") ||
-        epicName.includes("migración de contentful a ZeSystem") ||
-        epicName.includes("google tag manager") ||
-        epicName.includes("catalog connect")
-      )
-    })
 
     res.status(200).json({ epicas: filteredEpicas });
   } catch (error) {
