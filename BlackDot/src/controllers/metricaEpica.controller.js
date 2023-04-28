@@ -99,7 +99,7 @@ exports.getAllEpicas = async (req, res) => {
       }
     });
 
-    filteredEpicas.forEach((filteredEpica) => {
+    filteredEpica.forEach((filteredEpica) => {
       const idEpica = filteredEpica.idEpica;
       const epicaSprints = epicaSprintsMap[idEpica] || [];
 
@@ -109,7 +109,7 @@ exports.getAllEpicas = async (req, res) => {
     res.render(
       path.join(__dirname, "../views/static/epicas/verMetricasEpicas.ejs"),
       {
-        epicas: filteredEpica ? [filteredEpica] : [],
+        epicas: filteredEpica,
         sprints: sprintNames,
       }
     );
