@@ -24,7 +24,7 @@ create table if not exists empleado
     segundoNombre varchar (25),
     apellidoPaterno varchar (25) not null,
     apellidoMaterno varchar (25), 
-    idGoogleAuth binary (32) not null, 
+    idGoogleAuth binary (64) not null, 
     googleEmail varchar (50) not null, 
     googleProfilePicture varchar(300)
 );
@@ -65,7 +65,7 @@ create table if not exists issue
 (
     idIssue int not null auto_increment primary key,
     issueKey varchar(50) unique,
-    nombreIssue varchar (300) not null, 
+    nombreIssue varchar (400) not null, 
     storyPoints int not null default 0,
     labelIssue varchar (100),
     prioridadIssue enum ('Highest', 'High', 'Medium', 'Low', 'Lowest') not null default 'Lowest',
