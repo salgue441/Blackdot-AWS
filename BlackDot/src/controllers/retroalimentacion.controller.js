@@ -222,7 +222,7 @@ exports.getRegistrarRespuestas = async (req, res) => {
             Pregunta.getByIds(idsPreguntas).then(async (preguntas) => {
               // Render the EJS template with the preguntas and progress variables
               res.render(
-                "Static/retroalimentacion/registrarRespuestasRetroalimentacion.ejs",
+                "static/retroalimentacion/registrarRespuestasRetroalimentacion.ejs",
                 {
                   preguntas,
                 }
