@@ -1,3 +1,13 @@
+/**
+ * @file auth.controller.js
+ * @brief Authentication controller. Renders the login page and handles the
+ * login API endpoint.
+ * @author Carlos Salguero
+ * @version 1.0
+ * @date 2023-05-01 
+ * 
+ * @copyright Copyright 2023 (c) - MIT License
+ */
 const path = require('path');
 const bycript = require('bcryptjs');
 
@@ -7,6 +17,7 @@ const authUtils = require('../utils/auth')
 // Models
 const Empleado = require('../models/empleado.model');
 const EmpleadoRol = require('../models/empleadoRol.model');
+const Rol = require('../models/rol.model')
 
 // Functions
 /**
@@ -30,8 +41,9 @@ const renderLogin = (req, res) => {
 /**
  * @brief 
  * Log in API endpoint. Verifies if the user already exists in the database.
- * If it doesn't, it creates a new user. Then, it creates a new session and
- * returns the session data.
+ * If it doesn't, it creates a new user. If there are no users, the first user
+ * will be an admin. If there are users, the new user will be a regular user.
+ * Then, it creates a new session and returns the session data.
  * @param {*} req Request object
  * @param {*} res Response object
  * @param {*} next Next function
@@ -44,6 +56,31 @@ const loginAPI = async (req, res, next) => {
     const user = await Empleado.getByEmail(data.email)
 
     if (!user) {
+      const exists = await Empleado.exists()
+
+      // If there are no users, the first user will be an admin
+      if (!exists) {
+        const newUser = new Empleado({
+          primerNombre: data.given_name.split(' ')[0],
+          segundoNombre: data.given_name.split(' ')[1] || null,
+          apellidoPaterno: data.family_name.split(' ')[0],
+          apellidoMaterno: data.family_name.split(' ')[1] || null,
+          idGoogleAuth: bycript.hashSync(data.sub, 12),
+          googleEmail: data.email,
+          googleProfilePicture: data.picture,
+        })
+
+        const newEmployee = await newUser.save()
+
+        // Role (default: 1 - Admin)
+        const newEmployeeRole = new EmpleadoRol({
+          idEmpleado: newEmployee.idEmpleado,
+          idRol: 1,
+        })
+
+        await newEmployeeRole.save()
+      }
+
       const newUser = new Empleado({
         primerNombre: data.given_name.split(" ")[0],
         segundoNombre: data.given_name.split(" ")[1] || null,
@@ -66,12 +103,18 @@ const loginAPI = async (req, res, next) => {
       await newEmployeeRole.save()
     }
 
+    // Getting the role of the user
+    const userRole = await EmpleadoRol.getByIDE(user.idEmpleado)
+    const roleName = await Rol.getByID(userRole.idRol)
+
     const userData = {
       primerNombre: data.given_name,
       apellidoPaterno: data.family_name,
       googleEmail: data.email,
       idGoogleAuth: data.sub,
       googleProfilePicture: data.picture,
+      idRole: userRole.idRol,
+      roleName: roleName.nombreRol,
     }
 
     // session
@@ -119,13 +162,18 @@ const refreshTokenAPI = async (req, res, next) => {
       })
     }
 
-    // User data
+    // User role data & session data
+    const userRole = await EmpleadoRol.getByIDE(user.idEmpleado)
+    const roleName = await Rol.getByID(userRole.idRol)
+
     const userData = {
       primerNombre: verified.primerNombre,
       apellidoPaterno: verified.apellidoPaterno,
       googleEmail: verified.googleEmail,
       idGoogleAuth: verified.idGoogleAuth,
       googleProfilePicture: verified.googleProfilePicture,
+      idRole: userRole.idRol,
+      roleName: roleName.nombreRol,
     }
 
     // Refreshing the tokens

@@ -18,7 +18,12 @@
           <%= locals.currentUser.primerNombre.split(" ")[0] + " " +
           locals.currentUser.apellidoPaterno.split(" ")[0] %>
         </p>
-        <p class="is-size-7">Rol</p>
+
+        <% if (locals.currentUser.roleName) { %>
+        <p class="is-size-7"><%- locals.currentUser.roleName %></p>
+        <% } else { %>
+        <p class="is-size-7">Sin Rol</p>
+        <% } %>
       </section>
     </section>
     <% } %>
@@ -34,6 +39,7 @@
       </ul>
 
       <hr class="mt-2 mb-0" />
+      
 
       <!-- Metricas -->
 
@@ -66,11 +72,13 @@
               >Responder</a
             >
           </li>
+          <% if(locals.currentUser.roleName === 'Administrador'){ %>
           <li>
             <a class="navbar-item is-size-6 ml-2" href="/actual/verRespuestas"
               >Respuestas</a
             >
           </li>
+          <% } %>
           <li>
             <a
               class="navbar-item is-size-6 ml-2"
@@ -80,16 +88,18 @@
           </li>
         </ul>
       </section>
-
+      <% if(locals.currentUser.roleName === 'Administrador'){ %>
       <!-- Accionables -->
       <section class="mt-4 mb-3 sectionSideBar">
         <ul class="is-size-5 ml-5">
           Accionables
+          
           <li>
             <a class="navbar-item is-size-6 ml-2" href="/actual/accionables"
               >Aprobar</a
             >
           </li>
+          
           <li>
             <a
               class="navbar-item is-size-6 ml-2"
@@ -99,8 +109,11 @@
           </li>
         </ul>
       </section>
+      <% } %>
 
       <!-- Editar -->
+
+      <% if(locals.currentUser.roleName === 'Administrador'){ %>
       <section class="mt-4 mb-3 sectionSideBar">
         <ul class="is-size-5 ml-5">
           Editar
@@ -111,6 +124,15 @@
           </li>
         </ul>
       </section>
+
+      <% } %>
     </section>
   </section>
 </aside>
+
+
+<style>
+  hr{
+    background-color: #fff;
+  }
+</style>
