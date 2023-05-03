@@ -39,7 +39,8 @@ app.use(cors({
 // View engine & static files
 app.set('view engine', 'ejs')
 app.set("views", path.join(__dirname, "/src/views"))
-app.use(express.static('public'))
+app.use(express.static(`${__dirname}/public`))
+app.use("/reports", express.static(`${__dirname}/public/reports`))
 
 // Session
 /**
@@ -77,9 +78,15 @@ app.use((req, res, next) => {
   next()
 })
 
+
+
+
 // Routes
 const initRoutes = require('./src/routes/index.routes')
 initRoutes(app)
+
+
+
 
 // 404 Error
 /**

@@ -1,3 +1,8 @@
+<% if(locals.currentUser.roleName === 'Sin Rol'){ %>
+  <%- include('../../partials/noROl.ejs') %>
+<% }else{ %>
+
+
 <html>
   <%- include('../../partials/header.ejs') %>
 
@@ -14,7 +19,9 @@
           </div>
           <% if(locals.currentUser.roleName === 'Administrador'){ %>
           <div class="column is-narrow">
-            <a href="#" class="button is-danger reporte-button"
+            <a href="#" 
+            class="button is-danger reporte-button"
+            onclick="generateReport(SprintComparison, 'Comparativa de Epicas')"
               >Generar Reporte</a
             >
           </div>
@@ -80,7 +87,11 @@
   </body>
 </html>
 
+
+
 <script src="/js/comparativaEpicas.chart.js"></script>
+
+<% } %>
 
 <style>
   ::-webkit-scrollbar {

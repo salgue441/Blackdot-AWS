@@ -3,9 +3,11 @@ const authRoutes = require("./auth.routes")
 const editarRoutes = require("./editar.routes")
 const historicoRoutes = require("./historico.routes")
 const mainRoutes = require("./main.routes")
+const reportRoutes = require("./report.routes")
 
 // middleware
 const authMiddleware = require("../middlewares/auth")
+const roles = require("../middlewares/roles.middleware")
 
 /**
  * @brief 
@@ -20,6 +22,7 @@ const initRoutes = (app) => {
     app.use("/actual", actualRoutes)
     app.use("/editar", editarRoutes)
     app.use("/historico", historicoRoutes)
+    app.use("/report", reportRoutes)
 }
 
 module.exports = initRoutes
