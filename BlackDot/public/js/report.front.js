@@ -52,6 +52,7 @@ const generateReport = async (canvasID, pageTitle) => {
   try {
     const response = await fetch("/report/admin/generate", options);
     const result = await response.json();
+    console.log(result);
 
     window.open(`https://padawan-0.laing.mx/reports/${result.fileName}.pdf`, "_blank");
 
