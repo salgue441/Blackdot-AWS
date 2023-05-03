@@ -511,19 +511,18 @@ exports.getRetroalimentacionExitosa = async (req, res) => {
 
               //Gets the id of the saved question to add it to the retroalimentacionPregunta table
               Pregunta.getLastId().then(async (idPregunta) => {
-                console.log('Entro al getlastid')
+
                 const newRetroPregunta = new retroPregunta({
                   idRetroalimentacion: idRetro,
                   idPregunta: idPregunta,
                   required: 1,
                 })
 
-                console.log('Se crea el nuevo retroPregunta')
-                console.log(newRetroPregunta)
+
 
                 newRetroPregunta.save()
 
-                console.log('Se guarda el nuevo retroPregunta')
+
               })
             }
 
