@@ -54,7 +54,7 @@ const generateReport = async (canvasID, pageTitle) => {
     const result = await response.json();
     console.log(result);
 
-    window.open(`https://padawan-0.laing.mx/reports/${result.fileName}.pdf`, "_blank");
+    window.open(`/reports/${result.fileName}.pdf`, "_blank");
 
     const data = await generateCSV(canvasID);
     const blob = new Blob([data], { type: "text/csv" });
