@@ -101,6 +101,13 @@ app.get('*', (req, res) => {
   res.render(path.join(__dirname, './src/views/static/404/404.ejs'))
 })
 
+app.get('/reports/:filename', (req, res) => {
+  const { filename } = req.params;
+  const filePath = `${__dirname}/public/reports/${filename}`;
+  res.sendFile(filePath);
+});
+
+
 // Server
 /**
  * @brief
