@@ -2,7 +2,6 @@ const ejs = require("ejs");
 const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
-const chromium = require("chrome-aws-lambda");
 
 const generateTemplate = async (req, res) => {
   try {
@@ -24,28 +23,35 @@ const generateTemplate = async (req, res) => {
       }
     );
 
-    const browser = await chromium.puppeteer.launch({
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-      defaultViewport: chromium.defaultViewport,
-      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+      headless: true,
     });
 
     const page = await browser.newPage();
-    await page.setContent(template, { waitUntil: "networkidle0" });
-    await page.pdf({
-      path: "public/reports/report.pdf",
+    await page.setContent(template);
+    await page.emulateMediaType("screen");
+
+    const pdf = await page.pdf({
       format: "A4",
       printBackground: true,
+      margin: {
+        top: "20px",
+        bottom: "40px",
+        left: "20px",
+        right: "20px",
+      },
     });
 
     await browser.close();
 
-    const fileName = "report";
-    const domain = process.env.DOMAIN || "http://localhost:3000";
+    res.contentType("application/pdf");
+    res.send(pdf);
 
-    return res.status(201).json({ success: true, fileName, domain });
+    return res.status(200).json({
+      success: true,
+      message: "Report generated successfully",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
