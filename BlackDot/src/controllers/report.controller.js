@@ -1,12 +1,12 @@
 const ejs = require("ejs");
 const fs = require("fs");
 const path = require("path");
-const puppeteer = require("chrome-aws-lambda");
+const puppeteer = require("puppeteer");
+const chromium = require("chrome-aws-lambda");
 
 const generateTemplate = async (req, res) => {
   try {
     const { graphImage, reportTitle } = req.body;
-
     const logoImage = fs.readFileSync(
       path.join(__dirname, "../../public/assets/$zebrands-brand-logo.svg")
     );
@@ -24,8 +24,8 @@ const generateTemplate = async (req, res) => {
       }
     );
 
-    const browser = await puppeteer.launch({
-      executablePath: await chromium.executablePath(),
+    const browser = await chromium.puppeteer.launch({
+      executablePath: await chromium.executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
       defaultViewport: chromium.defaultViewport,
