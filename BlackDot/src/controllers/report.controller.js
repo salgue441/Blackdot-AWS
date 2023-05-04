@@ -25,7 +25,7 @@ const generateTemplate = async (req, res) => {
 
     const browser = await puppeteer.launch({
       args: ["--no-sandbox"],
-      headless: true,
+      headless: 'new',
     });
 
     const page = await browser.newPage();
