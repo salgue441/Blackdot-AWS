@@ -25,11 +25,11 @@ const generateTemplate = async (req, res) => {
     );
 
     const browser = await puppeteer.launch({
-      args: puppeteer.args,
-      defaultViewport: puppeteer.defaultViewport,
-      executablePath: await puppeteer.executablePath,
-      headless: puppeteer.headless,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
       ignoreHTTPSErrors: true,
+      defaultViewport: chromium.defaultViewport,
+      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
     });
 
     const page = await browser.newPage();
