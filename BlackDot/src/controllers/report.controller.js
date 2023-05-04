@@ -48,10 +48,6 @@ const generateTemplate = async (req, res) => {
     res.contentType("application/pdf");
     res.send(pdf);
 
-    return res.status(200).json({
-      success: true,
-      message: "Report generated successfully",
-    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
