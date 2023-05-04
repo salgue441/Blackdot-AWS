@@ -2,7 +2,10 @@ const ejs = require("ejs");
 const fs = require("fs");
 const path = require("path");
 const Xvfb = require("xvfb");
-const xvfb = new Xvfb();
+const xvfb = new Xvfb({
+  silent: true,
+  xvfb_args: ["-screen", "0", "1280x800x24", "-ac"],
+});
 
 const generateTemplate = async (req, res) => {
   try {
