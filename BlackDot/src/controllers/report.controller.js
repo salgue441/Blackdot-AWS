@@ -54,7 +54,7 @@ const generateTemplate = async (req, res) => {
       });
     }
 
-    return res.status(201).json({success: true, fileName})
+    return res.status(201).json({ success: true, fileName })
   });
 };
 
