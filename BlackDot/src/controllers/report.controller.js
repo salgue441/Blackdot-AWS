@@ -1,15 +1,7 @@
-/**
- * @file report.controller.js
- * @brief Controller for report page
- * @author Yuna Chung
- * @version 1.0
- * @date 2023.04.27
- */
-
 const ejs = require("ejs");
 const fs = require("fs");
-const pdf = require("html-pdf");
 const path = require("path");
+const puppeteer = require("puppeteer");
 
 const generateTemplate = async (req, res) => {
   const { graphImage, reportTitle } = req.body;
@@ -33,33 +25,23 @@ const generateTemplate = async (req, res) => {
     }
   );
 
-  const options = {
-    height: "11in",
-    width: "8.5in",
-    header: {
-      height: "5mm",
-    },
-    footer: {
-      height: "5mm",
-    },
-  };
+  // Generate the PDF
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(template, { waitUntil: "networkidle0" });
+  await page.pdf({
+    path: "public/reports/report.pdf",
+    format: "A4",
+    printBackground: true,
+  });
+
+  await browser.close();
 
   const fileName = "report";
-
   const domain = process.env.DOMAIN || "http://localhost:3000";
 
-  pdf.create(template, options).toFile(`public/reports/${fileName}.pdf`, (error, data) => {
-    if (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Error generating the PDF",
-      });
-    }
-
-    return res.status(201).json({ success: true, fileName, domain })
-  });
+  return res.status(201).json({ success: true, fileName, domain });
 };
-
 
 module.exports = {
   generateTemplate,
