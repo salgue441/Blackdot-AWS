@@ -24,11 +24,12 @@ const generateTemplate = async (req, res) => {
       }
     );
 
-    const browser = await puppeteer.launch({
-      args: puppeteer.defaultArgs(),
-      defaultViewport: puppeteer.defaultViewport,
-      executablePath: await puppeteer.executablePath(),
-      headless: puppeteer.headless,
+    browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
 
     const page = await browser.newPage();
