@@ -24,11 +24,11 @@ const generateTemplate = async (req, res) => {
       }
     );
 
-    browser = await chromium.puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
+    const browser = await puppeteer.launch({
+      args: puppeteer.defaultArgs(),
+      defaultViewport: puppeteer.defaultViewport(),
+      executablePath: await puppeteer.executablePath(),
+      headless: puppeteer.headless(),
       ignoreHTTPSErrors: true,
     });
 
