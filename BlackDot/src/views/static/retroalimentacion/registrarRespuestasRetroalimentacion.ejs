@@ -14,8 +14,8 @@ include('../../partials/noRol.ejs') %> <% }else{ %>
 
         <form class="preguntaContainer" method="POST" action="/actual/enviado">
           <% let cantCualitativas = 0; %> <% for (let i = 0; i <
-          preguntas.length; i++) { %> <% if(preguntas[i].contenido !=
-          '¿Quepodemos mejorar?') { %> <% if (preguntas[i].tipoPregunta ===
+          preguntas.length; i++) { %> <% if(preguntas[i].contenido != '¿Que
+          podemos mejorar?') { %> <% if (preguntas[i].tipoPregunta ===
           'Cualitativa') { %>
           <div
             class="box is-flex is-flex-direction-column is-align-self-center"
