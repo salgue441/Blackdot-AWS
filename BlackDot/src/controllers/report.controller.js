@@ -25,7 +25,7 @@ const generateTemplate = async (req, res) => {
     );
 
     const browser = await puppeteer.launch({
-      args: puppeteer.args,
+      args: puppeteer.defaultArgs(),
       defaultViewport: puppeteer.defaultViewport,
       executablePath: await puppeteer.executablePath(),
       headless: puppeteer.headless,
@@ -56,4 +56,4 @@ const generateTemplate = async (req, res) => {
 
 module.exports = {
   generateTemplate,
-}
+};
