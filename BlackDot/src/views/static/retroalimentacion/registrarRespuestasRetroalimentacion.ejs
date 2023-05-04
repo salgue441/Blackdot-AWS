@@ -1,5 +1,5 @@
 <% if(locals.currentUser.roleName === 'Sin Rol'){ %>
-  <%- include('../../partials/noROl.ejs') %>
+  <%- include('../../partials/noRol.ejs') %>
 <% }else{ %>
 
 
@@ -9,7 +9,7 @@
   <body>
     <%- include('../../partials/navBar.ejs') %>
 
-    <%- include('../../partials/sideBarAdmin.ejs') %>
+    <%- include('../../partials/sidebarAdmin.ejs') %>
 
     <div class="mainContainer">
       <section class="container">
@@ -76,6 +76,12 @@
 <% } %>
 
 <style>
+
+  html{
+    overflow: hidden;
+  }
+
+
   ::-webkit-scrollbar {
     width: 0;
     height: 0;

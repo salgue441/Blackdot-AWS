@@ -26,7 +26,6 @@ const Accionable = require("../models/accionable.model")
 const CualitativaAccionable = require("../models/cualiAccionable.model")
 const retroPregunta = require("../models/retroPregunta.model")
 const Sprint = require("../models/sprint.model")
-const { Console } = require("console")
 
 bodyparser.urlencoded({ extended: true })
 
@@ -95,18 +94,18 @@ exports.getCurretRetroalimentacion = async (req, res) => {
       try {
         const idRetro = req.params.id || retro
 
-
+     
 
         retroObj.id = idRetro
 
-
+    
 
         // Quantitative answers
         const quantitative = await retroPregunta.getQuantitativeAnswerByID(
           idRetro
         )
 
-        // Qualitative answers
+          // Qualitative answers
         const qualitative = await retroPregunta.getQualitativeAnswersByID(idRetro)
         const simplifiedQualitative = simplifyAnswers(qualitative)
 
@@ -114,7 +113,7 @@ exports.getCurretRetroalimentacion = async (req, res) => {
         retros = await Retro.getAll()
 
 
-
+    
 
         const simplifiedQuantitative = simplifyAnswers(quantitative)
 
@@ -122,7 +121,7 @@ exports.getCurretRetroalimentacion = async (req, res) => {
           question.respuestas = countDuplicates(question.respuestas)
         }
 
-
+   
         res.render(
           path.join(
             __dirname,
@@ -510,19 +509,14 @@ exports.getRetroalimentacionExitosa = async (req, res) => {
               await nuevaPregunta.save()
 
               //Gets the id of the saved question to add it to the retroalimentacionPregunta table
-              Pregunta.getLastId().then(async (idPregunta) => {
-
+              Pregunta.getLastId().then((idPregunta) => {
                 const newRetroPregunta = new retroPregunta({
                   idRetroalimentacion: idRetro,
                   idPregunta: idPregunta,
                   required: 1,
                 })
 
-
-
                 newRetroPregunta.save()
-
-
               })
             }
 
