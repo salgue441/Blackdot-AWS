@@ -60,4 +60,59 @@ const generatePDF = async (canvasID, pageTitle) => {
   pdf.addImage(chartImage, 'PNG', 0.5, 1.5, 15, 7)
 
   pdf.save(`${pageTitle}.pdf`)
+
+  // csv
+  const data = await generateCSV(canvasID);
+  const blob = new Blob([data], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.setAttribute("href", url);
+  a.setAttribute("download", `${canvasID}.csv`);
+  a.click();
+}
+
+/**
+ * @brief
+ * Generates a CSV file from the table
+ * @param {String} chartID - ID of the chart
+ * @return {void} - csv file
+ */
+const generateCSV = (chartID) => {
+  const chart = Chart.getChart(chartID);
+  const { datasets, labels } = chart.data;
+  const res = {};
+
+  res.label = labels;
+
+  datasets.forEach((dataset) => {
+    res[dataset.label] = dataset.data;
+  });
+
+  return ConvertToCSV(res);
+}
+
+/**
+ * @brief
+ * Converts the data to CSV format
+ * @param {Object} objArray - Data to be converted
+ * @return {String} - CSV file
+ */
+function ConvertToCSV(data) {
+  const headers = Object.keys(data);
+  const rows = Object.values(data);
+
+  let csv = headers.join(",") + "\n";
+
+  for (let i = 0; i < rows[0].length; i++) {
+    let row = "";
+    for (let j = 0; j < rows.length; j++) {
+      if (j === rows.length - 1) row += rows[j][i];
+      else row += rows[j][i] + ",";
+      if (row.includes("undefined")) {
+        row = row.replace("undefined", "");
+      }
+    }
+    csv += row + "\n";
+  }
+  return csv;
 }
