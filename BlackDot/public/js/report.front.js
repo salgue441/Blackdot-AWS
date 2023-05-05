@@ -7,25 +7,6 @@
  *
  * @copyright Copyright 2023 (c) - MIT License
  */
-
-
-
-/**
- * @brief
- * Clones the chart and updates the properties
- * @param {string} canvasID - The ID of the canvas element
- * @returns {Object} - The cloned chart
- */
-const clonedAndUpdateChart = (canvasID) => {
-  const originalChart = Chart.getChart(canvasID);
-  const chartClone = Object.assign(
-    Object.create(Object.getPrototypeOf(originalChart)),
-    originalChart
-  );
-
-  return chartClone;
-};
-
 /**
  * @brief
  * Generates the report when the button is clicked.
