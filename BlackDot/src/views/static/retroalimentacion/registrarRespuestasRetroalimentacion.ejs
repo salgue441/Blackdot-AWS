@@ -19,13 +19,11 @@
 
         <form action="/actual/enviado" class="preguntaContainer" method="POST">
           <!-- Preguntas Cualitativas -->
-          <% let cantCuantitativas = 0 %>
 
           <!-- For cycle -->
-          <% for (let i = 0; i < preguntas.length; i++) { %>
-          <!-- Checking if preguntas is Accionable -->
-          <% if (preguntas[i].contenido != '¿Que podemos mejorar?' &&
-          preguntas[i].tipoPregunta === 'Cualitativa') { %>
+          <% for (let i = 0; i < preguntas.length; i++) { %> <%
+          if(preguntas[i].contenido != '¿Que podemos mejorar?') { %> <% if
+          (preguntas[i].tipoPregunta === 'Cualitativa') { %>
           <div
             class="box is-flex is-flex-direction-column is-align-self-center"
           >
@@ -43,7 +41,6 @@
             />
           </div>
 
-          <!-- end if -->
           <% } else { %>
           <div class="box is-flex is-flex-direction-column is-vcentered">
             <label class="label" for="respuestaCuantitativa"
@@ -53,7 +50,7 @@
             {name:preguntas[i].idPregunta }) %>
           </div>
 
-          <% } } %>
+          <% } } }%>
           <!-- Pregunta de Accionable -->
           <div class="box is-flex is-flex-direction-column">
             <label class="label" for="respuestaCualitativa"
